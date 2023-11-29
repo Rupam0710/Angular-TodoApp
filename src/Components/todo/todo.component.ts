@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Task } from '../task.model';
+import { Task } from '../../Model/task.model';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-todo',
@@ -9,13 +10,26 @@ import { Task } from '../task.model';
 export class TodoComponent {
   tasks: Task[] = [];
   completedTask: Task[] = [];
-  taskDescription: string = '';
+  taskDescription: string = undefined;
   currentId: number = 0;
 
+  form: FormGroup = this.fb.group({
+    TaskDescription: [''],
+  })
+  constructor(private fb: FormBuilder) { }
+
   public addTask(): void {
+    if (!this.taskDescription || !this.taskDescription.trim() || !/^[^\s0-9].*$/.test(this.taskDescription)) {
+      alert('Invalid Task Description. First character should not be a number or whitespace.');
+      this.form.reset();
+      return;
+    }
+
+
     this.tasks.push(new Task(this.currentId, this.taskDescription, false));
     this.currentId++;
-    this.taskDescription = '';
+    this.form.reset();
+
   }
 
   public editTask(index: number): void {

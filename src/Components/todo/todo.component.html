@@ -2,7 +2,7 @@
   <div class="app-wrapper">
     <h1 class="header">Angular Todo App</h1>
 
-    <form (submit)="addTask()">
+    <form [formGroup]="form" (submit)="addTask()">
       <label class="label" for="taskDescription">Task Description : </label>
       <input
         type="text"
@@ -10,6 +10,8 @@
         [(ngModel)]="taskDescription"
         class="task-input"
         name="taskDescription"
+        pattern="^[^\s0-9].*$"
+        formControlName="TaskDescription"
         required
       />
       <button type="submit" class="button-add">Add Task</button>
